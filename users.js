@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8081;
 
 // Connect to MongoDB Atlas
 mongoose.connect('mongodb+srv://ms:WebServices%40890@cluster0.chcgobw.mongodb.net/test', {
@@ -41,7 +41,7 @@ app.post('/add', async (req, res) => {
   try {
     const user = new User(req.body);
     await user.save();
-    res.status(201).send({ success: true, message: 'User added' },user);
+    res.status(201).json({ success: true, message: 'User added', users : user });
   } catch (err) {
     res.status(400).send(err);
   }
@@ -51,7 +51,7 @@ app.post('/add', async (req, res) => {
 app.get('/users', async (req, res) => {
   try {
     const users = await User.find({ success: true, message: 'User retrieved' });
-    res.send(users);
+    res.json(users);
   } catch (err) {
     res.status(500).send(err);
   }
